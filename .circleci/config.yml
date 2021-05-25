@@ -11,13 +11,15 @@ executors:
     docker:
       - image: amazon/aws-cli
 
+orbs:
+  aws-cli: circleci/aws-cli@2.0
+  node: circleci/node@4.3.0
+
 commands:
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
     parameters:
       # Add parameter here   
-      when:
-        type: string
       id:
         type: string
     steps:
@@ -25,10 +27,10 @@ commands:
           name: Destroy udapeople environments
           when: on_fail
           command: |
-            aws cloudformation delete-stack -- stack-name udapeople-backend-<< parameters.id >> 
-          environment:
-            TERM: xterm-256color
-          when: << parameters.when >>
+            aws cloudformation delete-stack -- stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
+            aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
+            aws cloudformation delete-stack --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
+
       - run:
           name: Destroy udapeople frontend cfn stack and S3 bucket
           command: |

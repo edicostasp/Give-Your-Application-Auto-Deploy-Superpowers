@@ -2,7 +2,7 @@ Description: >
   Cloudfront distribution for UdaPeople.
 
 Parameters:
-  WorkflowID:
+  WorkflowID: project3-2021
     Description: Unique identifier.
     Type: String
 
