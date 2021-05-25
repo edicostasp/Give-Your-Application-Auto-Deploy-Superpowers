@@ -1,1 +1,2 @@
 [web]
+ec2-107-23-195-27.compute-1.amazonaws.com
