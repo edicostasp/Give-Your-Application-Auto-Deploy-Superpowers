@@ -35,7 +35,7 @@ commands:
           working_directory: ./backend
           command: |
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-            SUCCESS = 1
+            # SUCCESS = 0
             if(( $SUCCESS==1 )); 
             then
               cd ~/project/backend
