@@ -37,7 +37,35 @@ commands:
               npm install
               npm run migrations:revert
             fi
-            
+  
+  test-frontend:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - frontend-build
+      - run:
+          name: Run Frontend Test
+          command: |
+            cd frontend
+            npm i
+            npm run test
+  test-backend:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - backend-build
+      - run:
+          name: Run Backend Test
+          command: |
+            cd backend
+            npm run test        
+
 jobs:
   build-frontend:
     docker:
@@ -78,3 +106,9 @@ workflows:
     jobs:
       - build-frontend
       - build-backend
+      - test-frontend:
+          requires:
+            - build-frontend
+      - test-backend:
+          requires:
+            - build-backend
